@@ -5,6 +5,7 @@ import DashboardCards from "./components/DashboardCards";
 import GenerateTestCases from "./components/GenerateTestCases";
 import UploadExcel from "./components/UploadExcel";
 import ChangeAnalysis from "./components/ChangeAnalysis";
+import UploadPdf from "./components/UploadPdf";
 
 function App() {
   const [activeModule, setActiveModule] =
@@ -34,6 +35,11 @@ function App() {
         "analyze" && (
         <ChangeAnalysis />
       )}
+
+      {activeModule ===
+  "pdf" && (
+  <UploadPdf />
+)}
     </div>
   );
 }

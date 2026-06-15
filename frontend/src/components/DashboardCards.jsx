@@ -28,13 +28,15 @@ function DashboardCards({
       style={{
         display: "grid",
         gridTemplateColumns:
-          "repeat(3,1fr)",
+          "repeat(4,1fr)",
 
         gap: "20px",
 
         margin: "20px"
       }}
     >
+
+      {/* Generate Test Cases */}
 
       <div
         style={cardStyle}
@@ -53,6 +55,8 @@ function DashboardCards({
         </p>
       </div>
 
+      {/* Upload Excel */}
+
       <div
         style={cardStyle}
         onClick={() =>
@@ -70,6 +74,8 @@ function DashboardCards({
         </p>
       </div>
 
+      {/* Analyze Change */}
+
       <div
         style={cardStyle}
         onClick={() =>
@@ -84,6 +90,25 @@ function DashboardCards({
 
         <p>
           Perform impact analysis
+        </p>
+      </div>
+
+      {/* Upload PDF */}
+
+      <div
+        style={cardStyle}
+        onClick={() =>
+          setActiveModule(
+            "pdf"
+          )
+        }
+      >
+        <h3>
+          Upload PDF
+        </h3>
+
+        <p>
+          Generate test cases from PDF requirements
         </p>
       </div>
 
