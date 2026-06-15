@@ -68,17 +68,37 @@ Requirement:
 {requirement}
 """
 
-    response = model.generate_content(prompt)
+    try:
 
-    clean_text = response.text.strip()
+        response = model.generate_content(
+            prompt
+        )
 
-    if clean_text.startswith("```json"):
-        clean_text = clean_text.replace(
-            "```json",
-            ""
-        ).replace(
-            "```",
-            ""
-        ).strip()
+        clean_text = response.text.strip()
 
-    return json.loads(clean_text)
+        if clean_text.startswith("```json"):
+
+            clean_text = (
+                clean_text
+                .replace("```json", "")
+                .replace("```", "")
+                .strip()
+            )
+
+        return json.loads(
+            clean_text
+        )
+
+    except Exception as e:
+
+        print(
+            "GEMINI ERROR:",
+            str(e)
+        )
+
+        return [
+            {
+                "error":
+                str(e)
+            }
+        ]

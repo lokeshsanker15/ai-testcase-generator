@@ -23,6 +23,9 @@ from chroma_service import (
 from rag_change_analyzer import (
     rag_analyze_change
 )
+from pdf_reader import (
+    read_pdf
+)
 
 import os
 
@@ -38,7 +41,8 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173"
+        "http://localhost:5173",
+        "http://127.0.0.1:5173"
     ],
     allow_credentials=False,
     allow_methods=["*"],
@@ -343,3 +347,60 @@ def export_analysis():
         filename="impact_analysis_report.xlsx",
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
+# ----------------------------------------
+# Upload PDF
+# Extract Requirements
+# Generate Test Cases
+# ----------------------------------------
+@app.post("/upload-pdf")
+async def upload_pdf(
+    file: UploadFile = File(...)
+):
+
+    file_path = os.path.join(
+        "uploads",
+        file.filename
+    )
+
+    with open(
+        file_path,
+        "wb"
+    ) as buffer:
+
+        buffer.write(
+            await file.read()
+        )
+
+    extracted_text = (
+        read_pdf(
+            file_path
+        )
+    )
+
+    if not extracted_text.strip():
+
+        return {
+            "error":
+            "No text found in PDF"
+        }
+
+    test_cases = (
+        generate_test_cases(
+            extracted_text
+        )
+    )
+
+    return {
+
+        "message":
+        "PDF processed successfully",
+
+        "file_name":
+        file.filename,
+
+        "extracted_text_length":
+        len(extracted_text),
+
+        "test_cases":
+        test_cases
+    }
